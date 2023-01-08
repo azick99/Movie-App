@@ -1,10 +1,11 @@
-const SearchInput = (props) => {
+const SearchInput = ({ handleChange }) => {
+
   return (
     <input
       className="serch-box"
       placeholder="serach..."
       type="search"
-      onChange={props.handleChange}
+      onChange={handleChange}
     />
   )
 }

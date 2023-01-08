@@ -1,55 +1,50 @@
+import { useEffect, useState } from 'react'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import movies from './data/movies.data'
 import Download from './routes/download/Download'
 import ErrorPage from './routes/home/ErrorPage'
+import Home from './routes/home/Home'
 import Navigation from './routes/navigation/Navigation'
 import New from './routes/new/New'
-import All from './routes/home/home-navigation/all/All'
-import Movies from './routes/home/home-navigation/movies/Movies'
-import Serials from './routes/home/home-navigation/serials/Serials'
-import Cartoon from './routes/home/home-navigation/cartoon/Cartoon'
-import HomeNovigation from './routes/home/home-navigation/HomeNovigation'
-import { MovieProvider } from './context/moviesCard.context'
 
-const router = createBrowserRouter([
-  {
-    path: '/',
-    element: <Navigation />,
-    errorElement: <ErrorPage />,
-    children: [
-      {
-        path: '/',
-        element: <HomeNovigation />,
-        children: [
-          {
-            path: '/',
-            element: <All />,
-          },
-          {
-            path: '/movies',
-            element: <Movies />,
-          },
-          {
-            path: '/serials',
-            element: <Serials />,
-          },
-          {
-            path: '/cartoon',
-            element: <Cartoon />,
-          },
-        ],
-      },
-      {
-        path: '/new',
-        element: <New />,
-      },
-      {
-        path: '/download',
-        element: <Download />,
-      },
-    ],
-  },
-])
 function App() {
+ 
+  const [onSearchHanlder, setOnSearchHandler] = useState('')
+  const [filteredMovies, setFilteredMovies] = useState(movies)
+
+  const handleChange = (event) => {
+    const searchFieldString = event.target.value.toLocaleLowerCase()
+    setOnSearchHandler(searchFieldString)
+  }
+
+  useEffect(() => {
+    const newFilteredMovies = movies.filter((movie) =>
+      movie.name.toLocaleLowerCase().includes(onSearchHanlder)
+    )
+    setFilteredMovies(newFilteredMovies)
+  }, [onSearchHanlder])
+  const router = createBrowserRouter([
+    {
+      path: '/',
+      element: <Navigation  handleChange={handleChange}/>,
+      errorElement: <ErrorPage />,
+      children: [
+        {
+          path: '/',
+          element: <Home filteredMovies={filteredMovies}/>,
+        },
+        {
+          path: '/new',
+          element: <New />,
+        },
+        {
+          path: '/download',
+          element: <Download />,
+        },
+      ],
+    },
+  ])
+
   return (
     <div className="app">
       <RouterProvider router={router} />

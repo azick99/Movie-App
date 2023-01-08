@@ -2,7 +2,7 @@ import { createContext, useEffect, useState } from 'react'
 import movies from '../data/movies.data'
 
 export const MovieContext = createContext({
-  movies: [],
+  fitlerMovies: [],
   handleChange: () => {},
 })
 
@@ -13,6 +13,7 @@ export const MovieProvider = ({ childen }) => {
     const searchFieldString = event.target.value.toLocaleLowerCase()
     setOnSearchHandler(searchFieldString)
   }
+  
   useEffect(() => {
     const newFilteredMovies = movies.filter((movie) =>
       movie.name.toLocaleLowerCase().includes(onSearchHanlder)

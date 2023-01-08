@@ -1,4 +1,5 @@
 import './MovieCard.style.scss'
+
 const MovieCard = (props) => {
   const { image, name} = props
   return (
